@@ -10,14 +10,16 @@ Compares bricklink prices to lego fabric "100g" prices.
 ## Usage
 
 ```powershell
-node .\index.js --apiKey=<rebrickableapikey> --itemId=<bricklinkpartid> --color=<rebrickablecolorname>
+node .\index.js --apiKey=<rebrickableapikey> --itemId=<bricklinkpartid> --color=<rebrickablecolorname> --username=<rebrickableusername> --password=<rebrickablepassword>
 ```
 
-| Option     | Description            |
-| ---------- | ---------------------- |
-| `--apiKey` | Rebrickable api key    |
-| `--itemId` | Bricklink part id      |
-| `--color`  | Rebrickable color name |
+| Option       | Description            | Optional                      |
+| ------------ | ---------------------- | ----------------------------- |
+| `--apiKey`   | Rebrickable api key    | No                            |
+| `--itemId`   | Bricklink part id      | Yes, when using partlist mode |
+| `--color`    | Rebrickable color name | Yes, when using partlist mode |
+| `--username` | Rebrickable username   | Yes, when using single mode   |
+| `--password` | Rebrickable password   | Yes, when using single mode   |
 
 ## Running unit tests
 
