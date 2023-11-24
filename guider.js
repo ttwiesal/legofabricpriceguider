@@ -1,3 +1,5 @@
+const sleep = async (ms) => new Promise((res) => setTimeout(res, ms));
+
 const guideForPartWithColorId = async (itemId, colorId) => {
   const legoFabricPrice = 9.9;
   const { loadPrice } = require('./bricklink/bricklink-price-loader.js');
@@ -6,7 +8,6 @@ const guideForPartWithColorId = async (itemId, colorId) => {
     console.log('Price not found!');
     return { itemId, colorId };
   }
-
   //get grams of item
   const { loadWeightInGramm } = require('./bricklink/bricklink-weight-loader.js');
   const weightInGramm = await loadWeightInGramm({ itemId });
@@ -61,11 +62,10 @@ const guideForPartlist = async (username, password) => {
   ]);
 
   const partlist = await getBricklinkParts({ usertoken, partlistid });
-  const sleep = async (ms) => new Promise((res) => setTimeout(res, ms));
 
   const guidance = [];
   for (const { itemId, colorId } of partlist) {
-    await sleep(1000);
+    await sleep(3000);
     guidance.push(await guideForPartWithColorId(itemId, colorId));
   }
 
