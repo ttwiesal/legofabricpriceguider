@@ -72,4 +72,4 @@ const guideForPartlist = async (username, password) => {
   return guidance;
 };
 
-module.exports = { guideForPartWithColorName, guideForPartlist };
+module.exports = { guideForPartWithColorName, guideForPartWithColorId, guideForPartlist };

@@ -21,25 +21,38 @@
           ],
         },
       ]).then(async ({ mode }) => {
-        const { guideForPartWithColorName, guideForPartlist } = require('./guider.js');
+        const { guideForPartWithColorId, guideForPartlist } = require('./guider.js');
 
         if (mode === 'guide-single') {
-          const { item, color } = await prompt([
+          const { item } = await prompt([
             {
               type: 'input',
               name: 'item',
               message: 'Item ID',
               default: cliArguments.itemId,
             },
+          ]);
+
+          const { getColors } = require('./rebrickable/part.js');
+          const availableColors = await getColors(item);
+
+          const colorChoices = availableColors.map((color) => ({ name: color.name, value: color.id }));
+          const { color } = await prompt([
             {
-              type: 'input',
+              type: 'list',
               name: 'color',
-              message: 'Color',
-              default: cliArguments.color,
+              message: 'Select a color',
+              choices: colorChoices,
             },
           ]);
 
-          const { itemId, colorId, bricklinkPrizePer100g, weight, bricklinkPrice, buyInFabric, savings } = await guideForPartWithColorName(item, color);
+          const { getBricklinkColorId } = require('./rebrickable/bricklink-colorid-loader.js');
+          const bricklinkColorId = await getBricklinkColorId(color);
+
+          const { itemId, colorId, bricklinkPrizePer100g, weight, bricklinkPrice, buyInFabric, savings } = await guideForPartWithColorId(
+            item,
+            bricklinkColorId,
+          );
           console.log(`Item ID: ${itemId}`);
           console.log(`Color ID: ${colorId}`);
 
