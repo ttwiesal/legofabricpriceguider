@@ -9,7 +9,7 @@
     const itemId = cliArguments.itemId;
     const color = cliArguments.color;
 
-    const { convertToBricklinkId } = require('./colorname-to-id-converter.js');
+    const { convertToBricklinkId } = require('./rebrickable/colorname-to-id-converter.js');
 
     const colorId = await convertToBricklinkId({ color });
 
@@ -18,11 +18,11 @@
       return;
     }
 
-    const { loadPrice } = require('./bricklink-price-loader.js');
+    const { loadPrice } = require('./bricklink/bricklink-price-loader.js');
     const pricePerPiece = await loadPrice({ itemId, color: colorId });
 
     //get grams of item
-    const { loadWeightInGramm } = require('./bricklink-weight-loader.js');
+    const { loadWeightInGramm } = require('./bricklink/bricklink-weight-loader.js');
     const weightInGramm = await loadWeightInGramm({ itemId });
 
     // pieces to match 100gramm
