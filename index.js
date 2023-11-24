@@ -24,10 +24,22 @@
         const { guideForPartWithColorName, guideForPartlist } = require('./guider.js');
 
         if (mode === 'guide-single') {
-          const { itemId, colorId, bricklinkPrizePer100g, weight, bricklinkPrice, buyInFabric, savings } = await guideForPartWithColorName(
-            cliArguments.itemId,
-            cliArguments.color,
-          );
+          const { item, color } = await prompt([
+            {
+              type: 'input',
+              name: 'item',
+              message: 'Item ID',
+              default: cliArguments.itemId,
+            },
+            {
+              type: 'input',
+              name: 'color',
+              message: 'Color',
+              default: cliArguments.color,
+            },
+          ]);
+
+          const { itemId, colorId, bricklinkPrizePer100g, weight, bricklinkPrice, buyInFabric, savings } = await guideForPartWithColorName(item, color);
           console.log(`Item ID: ${itemId}`);
           console.log(`Color ID: ${colorId}`);
 
