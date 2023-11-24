@@ -2,6 +2,10 @@ const guideForPartWithColorId = async (itemId, colorId) => {
   const legoFabricPrice = 9.9;
   const { loadPrice } = require('./bricklink/bricklink-price-loader.js');
   const pricePerPiece = await loadPrice({ itemId, color: colorId });
+  if (pricePerPiece === 0) {
+    console.log('Price not found!');
+    return { itemId, colorId };
+  }
 
   //get grams of item
   const { loadWeightInGramm } = require('./bricklink/bricklink-weight-loader.js');
@@ -11,16 +15,15 @@ const guideForPartWithColorId = async (itemId, colorId) => {
   const pieces = 100 / weightInGramm;
   const pricePer100g = pieces * pricePerPiece;
 
-  console.log(`Lego Fabric price: ${legoFabricPrice} EUR`);
-  console.log(`Bricklink average price last 6 Months: ${pricePerPiece} EUR`);
-  console.log(`Weight of piece: ${weightInGramm}g`);
-  console.log(`100 Gramm Bricklink: ${pricePer100g} EUR`);
-
-  if (pricePer100g < legoFabricPrice) {
-    console.log(`Buy from Bricklink! Savings: ${(pricePer100g - legoFabricPrice) * -1} EUR`);
-  } else {
-    console.log(`Buy from Lego Fabric! Savings: ${(legoFabricPrice - pricePer100g) * -1} EUR`);
-  }
+  return {
+    itemId,
+    colorId,
+    bricklinkPrizePer100g: pricePer100g,
+    weight: weightInGramm,
+    bricklinkPrice: pricePerPiece,
+    buyInFabric: pricePer100g > legoFabricPrice,
+    savings: pricePer100g > legoFabricPrice ? pricePer100g - legoFabricPrice : legoFabricPrice - pricePer100g,
+  };
 };
 
 const guideForPartWithColorName = async (itemId, color) => {
@@ -58,11 +61,15 @@ const guideForPartlist = async (username, password) => {
   ]);
 
   const partlist = await getBricklinkParts({ usertoken, partlistid });
+  const sleep = async (ms) => new Promise((res) => setTimeout(res, ms));
 
-  partlist.forEach(async ({ itemId, colorId }) => {
-    await guideForPartWithColorId(itemId, colorId);
-    setTimeout(() => {}, 1000);
-  });
+  const guidance = [];
+  for (const { itemId, colorId } of partlist) {
+    await sleep(1000);
+    guidance.push(await guideForPartWithColorId(itemId, colorId));
+  }
+
+  return guidance;
 };
 
 module.exports = { guideForPartWithColorName, guideForPartlist };

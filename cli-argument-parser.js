@@ -23,13 +23,15 @@ const parseAllCliArguments = function () {
 };
 
 const getCliArguments = () => {
-  const { color, itemId, apiKey } = parseAllCliArguments();
+  const { color, itemId, apiKey, username, password } = parseAllCliArguments();
 
   try {
     const validatedArgs = new Proxy({}, validator);
     validatedArgs.itemId = itemId;
     validatedArgs.apiKey = apiKey;
     validatedArgs.color = color;
+    validatedArgs.username = username;
+    validatedArgs.password = password;
     return validatedArgs;
   } catch (error) {
     console.error(chalk.bold.bgRed(error.message));
