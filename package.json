@@ -1,7 +1,7 @@
 {
   "name": "legofabricpriceguider",
   "version": "1.0.0",
-  "description": "",
+  "description": "Compares bricklink prices to lego fabric '100g' prices.",
   "main": "index.js",
   "scripts": {
     "start": "node index.js --apiKey=0b497ce74796931f791481aef5597615 --itemId=43723 --color=\"Dark Tan\"",
