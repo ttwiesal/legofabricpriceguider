@@ -32,4 +32,10 @@ const getParts = async ({ usertoken, partlistid }) => {
   }
 };
 
-module.exports = { getPartLists, getParts };
+const getBricklinkParts = async ({ usertoken, partlistid }) => {
+  const partlist = await getParts({ usertoken, partlistid });
+
+  return partlist.map(({ part, color }) => ({ itemId: part.external_ids.BrickLink[0], colorId: color.external_ids.BrickLink.ext_ids[0] }));
+};
+
+module.exports = { getPartLists, getParts, getBricklinkParts };
