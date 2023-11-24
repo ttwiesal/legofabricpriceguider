@@ -13,6 +13,12 @@ Compares bricklink prices to lego fabric "100g" prices.
 node .\index.js --apiKey=<rebrickableapikey> --itemId=<bricklinkpartid> --color=<rebrickablecolorname>
 ```
 
+| Option     | Description            |
+| ---------- | ---------------------- |
+| `--apiKey` | Rebrickable api key    |
+| `--itemId` | Bricklink part id      |
+| `--color`  | Rebrickable color name |
+
 ## Running unit tests
 
 Run `npm test` to execute the unit tests via [Jest](https://jestjs.io/).
