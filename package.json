@@ -12,9 +12,11 @@
   "author": "Alexander Wiesinger",
   "license": "MIT",
   "dependencies": {
+    "@inquirer/password": "^1.1.14",
     "axios": "^1.6.2",
     "cheerio": "^1.0.0-rc.12",
-    "form-data": "^4.0.0"
+    "form-data": "^4.0.0",
+    "inquirer": "^8.0.0"
   },
   "devDependencies": {
     "@types/jest": "^29.5.10",
