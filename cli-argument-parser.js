@@ -5,12 +5,6 @@ const validator = {
     if (prop === 'apiKey') {
       if (!value) throw new Error('No apiKey set! Use --apiKey');
     }
-    if (prop === 'itemId') {
-      if (!value) throw new Error('No itemId set! Use --itemId=17756');
-    }
-    if (prop === 'color') {
-      if (!value) throw new Error('No color set! Use --colorName="Bright Green"');
-    }
 
     obj[prop] = value;
     return true;
