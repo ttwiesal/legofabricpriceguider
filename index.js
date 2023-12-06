@@ -27,6 +27,33 @@
           await guideForSingle(cliArguments.itemId);
         } else if (mode === 'guide-partlist') {
           const guiding = await guideForPartlist(cliArguments.username, cliArguments.password);
+
+          try {
+            // export to csv
+            const fs = require('fs');
+            const path = require('path');
+            const csv = require('fast-csv');
+            const csvStream = csv.format({ headers: true, delimiter: ';' });
+
+            csvStream.pipe(fs.createWriteStream(path.join(__dirname, 'guiding.csv'), { encoding: 'utf8' }).on('error', (e) => console.error(e)));
+            guiding.forEach((part) => {
+              if (part.priceNotFound) return;
+
+              csvStream.write({
+                Name: part.name,
+                Color: part.colorName,
+                ColorId: part.colorId,
+                'Bricklink Prize/100g': `${part.bricklinkPrizePer100g.toFixed(2)} EUR`,
+                'Buy in fabric': part.buyInFabric,
+                Savings: `${part.savings.toFixed(2)} EUR`,
+              });
+            });
+            csvStream.end();
+          } catch (e) {
+            console.log('Could not export to csv');
+            console.error(e);
+          }
+
           console.log(guiding);
         }
       });
