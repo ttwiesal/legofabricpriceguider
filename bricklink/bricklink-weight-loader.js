@@ -7,9 +7,13 @@ const loadBricklinkWeight = async (itemId) => {
       .get(`https://www.bricklink.com/v2/catalog/catalogitem.page?P=${itemId}`, {
         headers: {
           'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36',
+          referer: `https://www.bricklink.com/v2/catalog/catalogitem.page?P=${itemId}`,
         },
       })
-      .then(({ data }) => {
+      .then((res) => {
+        const data = res.data;
+        if (!data) console.error('No weight data found for item ' + itemId);
+
         const $ = cheerio.load(data);
         const weightInfoSpan = $('#item-weight-info ');
 

@@ -4,7 +4,7 @@
   "description": "Compares bricklink prices to lego fabric '100g' prices.",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js --apiKey=apikey --username=username --password=password --itemId=43723 --color=\"Dark Tan\"",
+    "start": "node index.js --apiKey=apikey --username=username --password=password --itemId=43723 --color=\"Dark Tan\" --bricklinkUsername=username --bricklinkPassword=password",
     "test": "jest",
     "test:watch": "jest --watch",
     "lint": "eslint . --ext .js"
@@ -15,6 +15,7 @@
     "@inquirer/password": "^1.1.14",
     "axios": "^1.6.2",
     "cheerio": "^1.0.0-rc.12",
+    "fast-csv": "^4.3.6",
     "form-data": "^4.0.0",
     "inquirer": "^8.0.0"
   },

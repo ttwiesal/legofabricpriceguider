@@ -4,7 +4,15 @@ describe('cli-argument-parser', () => {
   it.each([
     {
       argv: ['path', '--color="Bright Green"', '--apiKey=20', '--itemId=bar', '--username=user', '--password=password'],
-      expected: { itemId: 'bar', color: 'Bright Green', apiKey: '20', username: 'user', password: 'password' },
+      expected: {
+        itemId: 'bar',
+        color: 'Bright Green',
+        apiKey: '20',
+        username: 'user',
+        password: 'password',
+        bricklinkPassword: undefined,
+        bricklinkUsername: undefined,
+      },
     },
   ])('should return valid runner args', ({ argv, expected }) => {
     process.argv = argv;

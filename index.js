@@ -9,6 +9,10 @@
     const prompt = inquirer.createPromptModule();
 
     let anotherRound = true;
+
+    const { login } = require('./bricklink/login.js');
+    const loginCookies = await login(cliArguments.bricklinkUsername, cliArguments.bricklinkPassword);
+
     while (anotherRound) {
       await prompt([
         {
@@ -21,52 +25,38 @@
           ],
         },
       ]).then(async ({ mode }) => {
-        const { guideForPartWithColorId, guideForPartlist } = require('./guider.js');
+        const { guideForSingle, guideForPartlist } = require('./guider.js');
 
         if (mode === 'guide-single') {
-          const { item } = await prompt([
-            {
-              type: 'input',
-              name: 'item',
-              message: 'Item ID',
-              default: cliArguments.itemId,
-            },
-          ]);
-
-          const { getColors } = require('./rebrickable/part.js');
-          const availableColors = await getColors(item);
-
-          const colorChoices = availableColors.map((color) => ({ name: color.name, value: color.id }));
-          const { color } = await prompt([
-            {
-              type: 'list',
-              name: 'color',
-              message: 'Select a color',
-              choices: colorChoices,
-            },
-          ]);
-
-          const { getBricklinkColorId } = require('./rebrickable/bricklink-colorid-loader.js');
-          const bricklinkColorId = await getBricklinkColorId(color);
-
-          const { itemId, colorId, bricklinkPrizePer100g, weight, bricklinkPrice, buyInFabric, savings } = await guideForPartWithColorId(
-            item,
-            bricklinkColorId,
-          );
-          console.log(`Item ID: ${itemId}`);
-          console.log(`Color ID: ${colorId}`);
-
-          console.log(`Bricklink average price last 6 Months: ${bricklinkPrice} EUR`);
-          console.log(`Weight of piece: ${weight}g`);
-          console.log(`100 Gramm Bricklink: ${bricklinkPrizePer100g} EUR`);
-
-          if (buyInFabric) {
-            console.log(`Buy from Lego Fabric! Savings: ${savings} EUR`);
-          } else {
-            console.log(`Buy from Bricklink! Savings: ${savings} EUR`);
-          }
+          await guideForSingle(cliArguments.itemId);
         } else if (mode === 'guide-partlist') {
-          const guiding = await guideForPartlist(cliArguments.username, cliArguments.password);
+          const guiding = await guideForPartlist(cliArguments.username, cliArguments.password, loginCookies);
+
+          try {
+            const fs = require('fs');
+            const path = require('path');
+            const csv = require('fast-csv');
+            const csvStream = csv.format({ headers: true, delimiter: ';' });
+
+            csvStream.pipe(fs.createWriteStream(path.join(__dirname, 'guiding.csv'), { encoding: 'utf8' }).on('error', (e) => console.error(e)));
+            guiding.forEach((part) => {
+              if (part.priceNotFound) return;
+
+              csvStream.write({
+                Name: part.name,
+                Color: part.colorName,
+                ColorId: part.colorId,
+                'Bricklink Prize/100g': `${part.bricklinkPrizePer100g.toFixed(2)} EUR`,
+                'Buy in fabric': part.buyInFabric,
+                Savings: `${part.savings.toFixed(2)} EUR`,
+              });
+            });
+            csvStream.end();
+          } catch (e) {
+            console.log('Could not export to csv');
+            console.error(e);
+          }
+
           console.log(guiding);
         }
       });
