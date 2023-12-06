@@ -21,50 +21,10 @@
           ],
         },
       ]).then(async ({ mode }) => {
-        const { guideForPartWithColorId, guideForPartlist } = require('./guider.js');
+        const { guideForSingle, guideForPartlist } = require('./guider.js');
 
         if (mode === 'guide-single') {
-          const { item } = await prompt([
-            {
-              type: 'input',
-              name: 'item',
-              message: 'Item ID',
-              default: cliArguments.itemId,
-            },
-          ]);
-
-          const { getColors } = require('./rebrickable/part.js');
-          const availableColors = await getColors(item);
-
-          const colorChoices = availableColors.map((color) => ({ name: color.name, value: color.id }));
-          const { color } = await prompt([
-            {
-              type: 'list',
-              name: 'color',
-              message: 'Select a color',
-              choices: colorChoices,
-            },
-          ]);
-
-          const { getBricklinkColorId } = require('./rebrickable/bricklink-colorid-loader.js');
-          const bricklinkColorId = await getBricklinkColorId(color);
-
-          const { itemId, colorId, bricklinkPrizePer100g, weight, bricklinkPrice, buyInFabric, savings } = await guideForPartWithColorId(
-            item,
-            bricklinkColorId,
-          );
-          console.log(`Item ID: ${itemId}`);
-          console.log(`Color ID: ${colorId}`);
-
-          console.log(`Bricklink average price last 6 Months: ${bricklinkPrice} EUR`);
-          console.log(`Weight of piece: ${weight}g`);
-          console.log(`100 Gramm Bricklink: ${bricklinkPrizePer100g} EUR`);
-
-          if (buyInFabric) {
-            console.log(`Buy from Lego Fabric! Savings: ${savings} EUR`);
-          } else {
-            console.log(`Buy from Bricklink! Savings: ${savings} EUR`);
-          }
+          await guideForSingle(cliArguments.itemId);
         } else if (mode === 'guide-partlist') {
           const guiding = await guideForPartlist(cliArguments.username, cliArguments.password);
           console.log(guiding);
