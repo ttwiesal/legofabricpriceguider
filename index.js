@@ -9,6 +9,10 @@
     const prompt = inquirer.createPromptModule();
 
     let anotherRound = true;
+
+    const { login } = require('./bricklink/login.js');
+    const loginCookies = await login(cliArguments.bricklinkUsername, cliArguments.bricklinkPassword);
+
     while (anotherRound) {
       await prompt([
         {
@@ -26,10 +30,9 @@
         if (mode === 'guide-single') {
           await guideForSingle(cliArguments.itemId);
         } else if (mode === 'guide-partlist') {
-          const guiding = await guideForPartlist(cliArguments.username, cliArguments.password);
+          const guiding = await guideForPartlist(cliArguments.username, cliArguments.password, loginCookies);
 
           try {
-            // export to csv
             const fs = require('fs');
             const path = require('path');
             const csv = require('fast-csv');

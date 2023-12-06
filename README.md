@@ -13,13 +13,15 @@ Compares bricklink prices to lego fabric "100g" prices.
 node .\index.js --apiKey=<rebrickableapikey> --itemId=<bricklinkpartid> --color=<rebrickablecolorname> --username=<rebrickableusername> --password=<rebrickablepassword>
 ```
 
-| Option       | Description            | Optional                      |
-| ------------ | ---------------------- | ----------------------------- |
-| `--apiKey`   | Rebrickable api key    | No                            |
-| `--itemId`   | Bricklink part id      | Yes, when using partlist mode |
-| `--color`    | Rebrickable color name | Yes, when using partlist mode |
-| `--username` | Rebrickable username   | Yes, when using single mode   |
-| `--password` | Rebrickable password   | Yes, when using single mode   |
+| Option                | Description            | Required                      |
+| --------------------- | ---------------------- | ----------------------------- |
+| `--apiKey`            | Rebrickable api key    | Yes                           |
+| `--itemId`            | Bricklink part id      | No                            |
+| `--color`             | Rebrickable color name | No                            |
+| `--username`          | Rebrickable username   | Yes, when using partlist mode |
+| `--password`          | Rebrickable password   | Yes, when using partlist mode |
+| `--bricklinkUsername` | Bricklink username     | Yes, when using partlist mode |
+| `--bricklinkPassword` | Bricklink password     | Yes, when using partlist mode |
 
 ## Running unit tests
 

@@ -1,8 +1,8 @@
 const sleep = async (ms) => new Promise((res) => setTimeout(res, ms));
-const guideForPartWithColorId = async (itemId, colorId) => {
+const guideForPartWithColorId = async (itemId, colorId, loginCookies) => {
   const legoFabricPrice = 9.9;
   const { loadPrice } = require('./bricklink/bricklink-price-loader.js');
-  const pricePerPiece = await loadPrice({ itemId, color: colorId });
+  const pricePerPiece = await loadPrice({ itemId, color: colorId, loginCookies });
   if (isNaN(pricePerPiece)) {
     console.log('Price not found!');
     return { itemId, colorId, priceNotFound: true };
@@ -39,7 +39,7 @@ const guideForPartWithColorName = async (itemId, color) => {
   return guideForPartWithColorId(itemId, colorId);
 };
 
-const guideForPartlist = async (username, password) => {
+const guideForPartlist = async (username, password, loginCookies) => {
   const inquirer = require('inquirer');
   const prompt = inquirer.createPromptModule();
 
@@ -65,7 +65,7 @@ const guideForPartlist = async (username, password) => {
   const guidance = [];
   for (const { itemId, colorId, name, colorName } of partlist) {
     await sleep(3000);
-    guidance.push({ name, colorName, ...(await guideForPartWithColorId(itemId, colorId)) });
+    guidance.push({ name, colorName, ...(await guideForPartWithColorId(itemId, colorId, loginCookies)) });
   }
 
   return guidance;
@@ -100,7 +100,7 @@ const guideForSingle = async (defaultItemId) => {
   const { getBricklinkColorId } = require('./rebrickable/bricklink-colorid-loader.js');
   const bricklinkColorId = await getBricklinkColorId(color);
 
-  const { itemId, colorId, bricklinkPrizePer100g, weight, bricklinkPrice, buyInFabric, savings } = await guideForPartWithColorId(item, bricklinkColorId);
+  const { itemId, colorId, bricklinkPrizePer100g, weight, bricklinkPrice, buyInFabric, savings } = await guideForPartWithColorId(item, bricklinkColorId, []);
   console.log(`Item ID: ${itemId}`);
   console.log(`Color ID: ${colorId}`);
 
@@ -114,4 +114,4 @@ const guideForSingle = async (defaultItemId) => {
     console.log(`Buy from Bricklink! Savings: ${savings} EUR`);
   }
 };
-module.exports = { guideForSingle, guideForPartlist };
+module.exports = { guideForSingle, guideForPartlist, guideForPartWithColorName };
