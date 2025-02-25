@@ -1,3 +1,5 @@
+[![CI](https://github.com/ttwiesal/legofabricpriceguider/actions/workflows/ci.yml/badge.svg)](https://github.com/ttwiesal/legofabricpriceguider/actions/workflows/ci.yml)
+
 # legofabricpriceguider
 
 Compares bricklink prices to lego fabric "100g" prices.
