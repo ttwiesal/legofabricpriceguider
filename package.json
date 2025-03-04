@@ -15,7 +15,7 @@
     "@inquirer/password": "^4.0.9",
     "axios": "^1.8.1",
     "cheerio": "^1.0.0",
-    "fast-csv": "^4.3.6",
+    "fast-csv": "^5.0.2",
     "form-data": "^4.0.2",
     "inquirer": "^12.4.2"
   },
