@@ -12,7 +12,7 @@
   "author": "Alexander Wiesinger",
   "license": "MIT",
   "dependencies": {
-    "@inquirer/password": "^4.0.13",
+    "@inquirer/password": "^4.0.15",
     "axios": "^1.9.0",
     "cheerio": "^1.0.0",
     "fast-csv": "^5.0.2",
